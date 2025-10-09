@@ -1,0 +1,19 @@
+{% extends "admin_base.html" %}
+{% load crispy_forms_tags %}
+<style>
+    .formclass{
+        width:400px;
+        margin: 100px auto;
+    }
+</style>
+{% block content %}
+<h2 class="text-white text-center mt-4">{{title}}</h2>
+<div class="container-fluid p-4 w-25 formclass">
+    <form method="post" class="form-control">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <center><button type="submit" class="btn btn-primary">Save</button></center>
+    </form>
+</div>
+
+{% endblock %}

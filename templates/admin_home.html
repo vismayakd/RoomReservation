@@ -1,0 +1,34 @@
+{% extends "admin_base.html" %}
+{% block title %}Hotel Admin Dashboard{% endblock %}
+
+{% block content %}
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <div class="container-fluid">
+    <ul class="navbar-nav">
+
+     <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'roomcategory_list' %}">Manage Categories</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'room_list'%}">Manage Rooms</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white " href="{% url 'specialrate_list' %}">Manage Special Rates</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'view_reservations' %}">View Reservations</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'admin_logout' %}">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container text-center mt-5">
+  <h2 class="text-white">Hotel Admin Dashboard</h2>
+</div>
+{% endblock %}
+
+
+

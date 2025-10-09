@@ -1,0 +1,32 @@
+{% extends "admin_base.html" %}
+{% block content %}
+<a href="{% url 'admin_home' %}" class="btn btn-sm btn-light m-2">Go Back</a>
+<h2 class="text-center text-white">Special Rates</h2>
+<div class="container mt-5 bg-light p-4 rounded">
+  
+  <a href="{% url 'specialrate_add' %}" class="btn btn-success mb-3"> Add Special Rate</a>
+
+  <table class="table table-bordered">
+    <tr>
+      <th>Category</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Rate Multiplier</th>
+      <th>Action</th>
+    </tr>
+    {% for rate in rates %}
+    <tr>
+      <td>{{ rate.room_category.name }}</td>
+      <td>{{ rate.start_date }}</td>
+      <td>{{ rate.end_date }}</td>
+      <td>{{ rate.rate_multiplier }}</td>
+      <td>
+        <a href="{% url 'specialrate_edit' rate.id %}" class="btn btn-sm btn-primary">Edit</a>
+        <a href="{% url 'specialrate_delete' rate.id %}" class="btn btn-sm btn-danger">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+{% endblock %}

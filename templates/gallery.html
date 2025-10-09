@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  body {
+    background-color: rgb(196, 255, 212);
+  }
+
+  .room-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+
+
+
+  .room-card img {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .card-body {
+    text-align: center;
+    padding: 15px;
+  }
+
+  
+
+
+  
+  
+</style>
+<a href="{% url 'index' %}" class="btn btn-sm btn-secondary m-2">Go Back</a>
+<div class="container my-5">
+  <h2 class="text-center mb-4">Our Rooms</h2>
+  <div class="row g-4 justify-content-center">
+    {% for room in rooms %}
+    <div class="col-md-4 col-3">
+      <div class="card room-card shadow">
+        {% if room.image %}
+        <img src="{{ room.image.url }}" alt="Room {{ room.room_number }}">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="fw-bold">Room No : {{ room.room_number }}</h5>
+          <p class="fw-semibold">{{ room.category.name }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

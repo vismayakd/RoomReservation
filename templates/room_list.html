@@ -1,0 +1,42 @@
+{% extends "admin_base.html" %}
+
+
+
+{% block content %}
+<a href="{% url 'admin_home' %}" class="btn btn-sm btn-light m-2">Go Back</a>
+<h2 class=" text-white text-center">Room List</h2>
+<div class="container mt-5 bg-light p-4 rounded ">
+    
+    <a href="{% url 'room_add' %}" class="btn btn-success mb-3">Add Room</a>
+    <table class="table table-bordered justify-content-center">
+        <tr>
+            <th>Image</th>
+            <th>Room No.</th>
+            <th>Room Category</th>
+            <th>Availability</th>
+            <th>Action</th>
+        </tr>
+        {% for room in rooms %}
+        <tr>
+            <td class="text-center"><img src="{{ room.image.url }}" 
+                style="width: 100px; height: 100px; margin-left:100px auto; object-fit:cover; border-radius:8px;">
+            </td>
+            <td>{{ room.room_number }}</td>
+            <td>{{ room.category.name }}</td>
+            {% if room.is_available %}
+                <td class="text-success">Yes</td>
+            {% else %}
+                <td class="text-danger">No</td>
+            {% endif %}
+            <td>
+                <a href="{% url 'room_edit' room.id %}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="{% url 'room_delete' room.id %}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
+
+

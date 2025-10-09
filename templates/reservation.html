@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<style>
+    body {
+        background-color: rgb(196, 255, 212);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .reservation-card {
+        margin: 100px auto;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        width: 500px;
+        padding: 30px;
+        text-align: center;
+    }
+    .btn-primary {
+      color: white;
+      font-weight: bold;
+    }
+</style>
+<div class="container mt-5" style="max-width: 700px;">
+  <div class="card shadow-lg border-0 rounded-4 p-4" style="background-color: #f8f9fa;">
+    <h3 class="text-center text-primary mb-3">Reservation Details</h3>
+    <p><b>Room:</b> {{ room.room_number }} - {{ room.category.name }}</p>
+    <p><b>Check-in:</b> {{ start_date }} | <b>Check-out:</b> {{ end_date }}</p>
+    <p><b>Total Nights:</b> {{ num_nights }}</p>
+
+    <hr>
+    <h5 class="mb-3">Price Breakdown:</h5>
+    <table class="table table-sm table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>Date</th>
+          <th>Price (₹)</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in price_list %}
+        <tr>
+          <td>{{ item.date }}</td>
+          <td>{{ item.price }}</td>
+          <td>{{ item.note }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <h5 class="text-end mt-3">Total Price: <b>₹{{ total_price }}</b></h5>
+
+    <form method="POST" class="mt-4">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="customer_name" class="form-label">Your Name</label>
+        <input type="text" class="form-control" name="customer_name" id="customer_name" required><br>
+        <label for="cust_num" class="form-label">No .of Guests</label>
+        <input type="number" class="form-control" >
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Confirm Reservation</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

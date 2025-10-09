@@ -1,0 +1,30 @@
+{% extends "admin_base.html" %}
+{% block title %}Room Categories{% endblock %}
+
+{% block content %}
+<a href="{% url 'admin_home' %}" class="btn btn-sm btn-light m-2">Go Back</a>
+<h2 class=" text-white text-center">Room Categories</h2>
+<div class="container mt-5 bg-light p-4 rounded">
+   
+    <a href="{% url 'roomcategory_add' %}" class="btn btn-success mb-3"> Add Category</a>
+    <table class="table table-bordered">
+        <tr>
+            <th>Name</th>
+            <th>Base Price</th>
+            <th>Actions</th>
+        </tr>
+        {% for categ in categories %}
+        <tr>
+            <td>{{ categ.name }}</td>
+            <td>{{ categ.base_price }}</td>
+            <td>
+                <a href="{% url 'roomcategory_edit' categ.id %}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="{% url 'roomcategory_delete' categ.id %}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+   
+</div>
+{% endblock %}
+

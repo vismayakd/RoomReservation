@@ -1,0 +1,131 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  body {
+    background-color: rgb(196, 255, 212);
+  }
+
+  .card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+ 
+  .btn-success {
+    color: white;
+    border-radius: 25px;
+  }
+
+  .heading {
+    color: rgb(1, 39, 1);
+    margin-top: 30px;
+    font-weight: 600;
+  }
+
+  .room-card img {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    height: 200px;
+    object-fit: cover;
+  }
+
+
+</style>
+
+<a href="{% url 'index' %}" class="btn btn-sm btn-secondary m-2">Go Back</a>
+<h2 class="text-center heading mt-2">Check Room Availability</h2>
+
+<div class="container my-2">
+  <div class="card p-3 bg-light">
+    <form method="POST" id="availabilityForm">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-4 ">
+          <label class="form-label">Select Room Category</label>
+          <select name="category" class="form-select" required>
+            <option value="">Choose Category</option>
+            {% for categ in categories %}
+              <option value="{{ categ.id }}">{{ categ.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Check In </label>
+          <input type="date" name="start_date" id="start_date" value="{{ start_date }}" class="form-control" required>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">Check Out</label>
+          <input type="date" name="end_date" id="end_date" value="{{ end_date }}" class="form-control" required>
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end ">
+          <button type="submit" class="btn btn-success w-100">Check</button>
+        </div>
+      </div>
+      <div id="dateError" class="alert alert-danger mt-2 text-center" style="display:none;"></div>
+    </form>
+  </div>
+
+  {% if rooms %}
+  <div class="mt-5">
+    <h2 class="text-center mb-4">Available Rooms</h2>
+
+    {% if special_rate %}
+      <div class="alert alert-warning text-center text-danger">
+        Special rate available between 
+        <b>{{ special_rate.start_date }}</b> and <b>{{ special_rate.end_date }}</b> 
+        (Multiplier: {{ special_rate.rate_multiplier }}x)
+      </div>
+    {% endif %}
+
+    <div class="row justify-content-center">
+      {% for room in rooms %}
+      <div class="col-md-4 col-sm-6 mb-4 d-flex justify-content-center">
+        <div class="card room-card w-100">
+          {% if room.image %}
+            <img src="{{ room.image.url }}" class="card-img-top" alt="{{ room.name }}">
+          {% endif %}
+          <div class="card-body text-center">
+            <h5 class="card-title text-dark fw-bold">Room No: {{ room.room_number }}</h5>
+            <p class="text-dark">Category: {{ room.category.name }}</p>
+            <p class="text-success fw-semibold">Base Price: ₹{{ room.category.base_price }}</p>
+
+            {% if special_rate %}
+              <p class="text-danger small fw-semibold">Special rate applies for selected dates!</p>
+            {% endif %}
+
+            <a href="{% url 'reservation' room.id %}?start_date={{ start_date }}&end_date={{ end_date }}" 
+               class="btn btn-success w-75 mt-2">
+              BOOK NOW
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div> 
+  </div>
+  
+  {% elif start_date and end_date %}
+    <p class="text-center mt-4 text-danger">No available rooms for the selected dates.</p>
+  {% endif %}
+</div>
+<script>
+  document.getElementById('availabilityForm').addEventListener('submit', function(event){
+      let startDate = document.getElementById('start_date').value;
+      let endDate = document.getElementById('end_date').value;
+      let errorDiv = document.getElementById('dateError');
+
+      if(startDate && endDate && endDate < startDate){
+          event.preventDefault();  
+          errorDiv.innerText = "End date cannot be before start date.";
+          errorDiv.style.display = "block";
+      } else {
+          errorDiv.style.display = "none";
+      }
+  });
+</script>
+{% endblock %}

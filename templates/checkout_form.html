@@ -1,0 +1,69 @@
+{% extends "admin_base.html" %}
+{% load static %}
+{% block content %}
+<style>
+ 
+
+  .checkout-card {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 600px;
+    margin: 50px auto;
+  }
+
+  .checkout-card h2 {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  .details p {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .btn {
+    border-radius: 25px;
+    padding: 8px 20px;
+  }
+
+  
+</style>
+<div class="checkout-card">
+  <h2 class="text-center mb-4">Checkout — {{ reservation.customer_name }}</h2>
+
+  <div class="details mb-4">
+    <p><strong>Room:</strong> {{ reservation.room }}</p>
+    <p><strong>Check-in:</strong> {{ reservation.start_date }}</p>
+    <p><strong>Check-out:</strong> {{ reservation.end_date }}</p>
+    <p><strong>Total Amount:</strong> ₹{{ reservation.total_price }}</p>
+  </div>
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label class="form-label">Customer Name</label>
+      <input type="text" name="customer_name" class="form-control" 
+             value="{{ reservation.customer_name }}" readonly>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Total Amount</label>
+      <input type="text" name="amount" class="form-control" 
+             value="₹{{ reservation.total_price }}" readonly>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <button type="submit" class="btn btn-primary">
+       Complete Payment
+      </button>
+      <a href="{% url 'view_reservations' %}" class="btn btn-warning">
+        Cancel
+      </a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

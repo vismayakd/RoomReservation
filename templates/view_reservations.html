@@ -1,0 +1,39 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+
+<a href="{% url 'admin_home' %}" class="btn btn-sm btn-light m-2">Go Back</a>
+<h2 class=" text-white text-center">RESERVATIONS</h2>
+<div class="container mt-5 bg-light p-4 rounded">
+    <table class="table table-bordered">
+        <tr>
+            <th>Customer</th>
+            <th>Room</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Total Price</th>
+            <th>Status</th>
+           
+        </tr>
+        {% for res in reservations %}
+        <tr>
+            <td>{{ res.customer_name }}</td>
+            <td>{{ res.room.category.name }}{{ res.room.room_number }}</td>
+            <td>{{ res.start_date }}</td>
+            <td>{{ res.end_date }}</td>
+            <td>₹{{ res.total_price }}</td>
+            {% if res.status %}
+                <td>
+                    <span class="badge badge-pill badge-success text-white bg-success h-50 p-2 w-50">Paid</span>
+                </td>
+            {% else %}
+                <td>
+                    <a href="{% url 'checkout_reservation' res.id %}" class="btn btn-warning">Checkout</a>
+                </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

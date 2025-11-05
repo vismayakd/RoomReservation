@@ -2,13 +2,14 @@ from django.shortcuts import render
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from . models import RoomCategory,Room,SpecialRate,Reservation
 from . forms import RoomCategoryForm,RoomForm,SpecialRateForm
 
 
 from datetime import datetime, timedelta
 from decimal import Decimal
-# Create your views here.
+
 def index(request):
     return render(request,'base.html')
 
@@ -44,6 +45,7 @@ def roomcategory_add(request):
         form = RoomCategoryForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,'Room Category added successfully')
             return redirect("roomcategory_list")
     else:
         form = RoomCategoryForm()
@@ -55,6 +57,7 @@ def roomcategory_edit(request, id):
         form = RoomCategoryForm(request.POST, instance=category)
         if form.is_valid():
             form.save()
+            messages.success(request,'Room Category Updated successfully')
             return redirect("roomcategory_list")
     else:
         form = RoomCategoryForm(instance=category)
@@ -64,6 +67,7 @@ def roomcategory_edit(request, id):
 def roomcategory_delete(request, id):
     category = get_object_or_404(RoomCategory, pk=id)
     category.delete()
+    messages.success(request,'Room Category Deleted successfully')
     return redirect("roomcategory_list")
 
 
@@ -79,6 +83,7 @@ def room_add(request):
         form = RoomForm(request.POST,request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request,'Room added successfully')
             return redirect("room_list")
     else:
         form = RoomForm()
@@ -92,6 +97,7 @@ def room_edit(request, id):
         form = RoomForm(request.POST, request.FILES,instance=room)
         if form.is_valid():
             form.save()
+            messages.success(request,'Room Updated successfully')
             return redirect("room_list")
     else:
         form = RoomForm(instance=room)
@@ -101,6 +107,7 @@ def room_edit(request, id):
 def room_delete(request, id):
     room = get_object_or_404(Room, pk=id)
     room.delete()
+    messages.success(request,'Room Deleted successfully')
     return redirect("room_list")
 
 @login_required
@@ -114,6 +121,7 @@ def specialrate_add(request):
         form = SpecialRateForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,'Special Rate added successfully')
             return redirect("specialrate_list")
     else:
         form = SpecialRateForm()
@@ -126,6 +134,7 @@ def specialrate_edit(request, id):
         form = SpecialRateForm(request.POST, instance=rate)
         if form.is_valid():
             form.save()
+            messages.success(request,'Special Rate updated successfully')
             return redirect("specialrate_list")
     else:
         form = SpecialRateForm(instance=rate)
@@ -135,6 +144,7 @@ def specialrate_edit(request, id):
 def specialrate_delete(request, id):
     rate = get_object_or_404(SpecialRate, pk=id)
     rate.delete()
+    messages.success(request,'Special Rate deleted successfully')
     return redirect("specialrate_list")
 
 
